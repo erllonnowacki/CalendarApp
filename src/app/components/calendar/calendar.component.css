@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar {
+  margin: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.createEvent {
+  margin-bottom: 10px;
+}
+
+.listEvent {
+  margin: 5px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.month-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.month-table th,
+.month-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.month-table .day {
+  position: relative;
+}
+
+.month-table .day .day-number {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.month-table .day .events {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 5px;
+}
+
+.month-table .day .events .event {
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  color: #333;
+  margin-bottom: 5px;
+  padding: 3px;
+}

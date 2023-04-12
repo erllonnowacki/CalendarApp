@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  justify-content: center;
+  align-items: center;
+  min-width: -webkit-fill-available;
+  margin: 20px;
+}
+
+mat-form-field {
+  width: 70%;
+}

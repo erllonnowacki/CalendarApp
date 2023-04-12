@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="calendar">
+    <button
+      class="createEvent"
+      mat-raised-button
+      color="primary"
+      (click)="openModal()"
+    >
+      Create Event
+    </button>
+    <mat-card style="width: 300px">
+      <mat-calendar
+        [(selected)]="dateSelected"
+        (selectedChange)="onDateChange($event)"
+        (monthSelected)="changeMonth($event)"
+      ></mat-calendar>
+    </mat-card>
+  </div>
+
+  <table class="month-table">
+    <thead>
+      <tr>
+        <th *ngFor="let dayName of daysOfWeek">{{ dayName }}</th>
+      </tr>
+    </thead>
+    <tbody cdkDropListGroup>
+      <tr *ngFor="let week of daysOfMonth">
+        <td
+          *ngFor="let day of week"
+          [class.has-events]="eventsForDay(day).length > 0"
+          cdkDropList
+          (cdkDropListDropped)="onDrop($event, day.toString())"
+        >
+          <span *ngIf="day" class="day-number">
+            {{ day }}
+            <mat-chip *ngIf="eventsForDay(day).length > 0" color="primary">
+              {{ eventsForDay(day).length }}
+            </mat-chip>
+          </span>
+          <div class="events">
+            <div
+              *ngFor="let event of eventsForDay(day)"
+              class="event"
+              cdkDrag
+              [cdkDragData]="event"
+            >
+              {{ event.title }}
+              <button
+                (click)="removeEvent(event)"
+                mat-icon-button
+                color="accent"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Events in {{ dateSelected | date }}</h2>
+  <div *ngIf="eventsdateSelected().length === 0">
+    <h3>No events</h3>
+  </div>
+  <div
+    *ngFor="let item of eventsdateSelected(); trackBy: trackByIndex"
+    class="listEvent"
+  >
+    <span>
+      {{ item.event.title }}
+    </span>
+    <button (click)="removeEvent(item.event)" mat-icon-button color="accent">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
