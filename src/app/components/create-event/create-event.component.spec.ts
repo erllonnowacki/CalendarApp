@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateEventComponent } from './create-eventcomponent';
+import { CreateEventComponent } from './create-event.component';
 
 describe('CriarEventoComponent', () => {
   let component: CreateEventComponent;

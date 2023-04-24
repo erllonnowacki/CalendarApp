@@ -1,4 +1,4 @@
-# Payevertest
+# CalendarApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.5.
 
@@ -7,7 +7,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 I developed using localStorage to store the events, so for some reason the first few records might not be registered or not deleted.\
 The calendar displays the days that have an event, and when the day is marked, it means there is an event on it.\
 You can drag events to a new date and they will be saved.\
-This project was made as part of a technical assessment for PayEver
 
 ## Development server
 

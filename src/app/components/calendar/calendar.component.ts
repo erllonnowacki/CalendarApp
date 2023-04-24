@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Event } from 'src/app/models/event';
 import { EventService } from 'src/app/services/event.service';
-import { CreateEventComponent } from '../create-event/create-eventcomponent';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -20,7 +21,8 @@ export class CalendarComponent {
 
   constructor(
     private eventService: EventService,
-    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar
   ) {}
 
@@ -28,28 +30,26 @@ export class CalendarComponent {
     this.eventService.eventosChanged.subscribe((eventos: Event[]) => {
       this.events = eventos;
     });
+
     this.eventService.eventosExcluido.subscribe((id: number) => {
       this.events = this.events.filter((event) => event.id !== id);
     });
-    this.events = this.eventService.getEvents();
-    this.generateDaysOfMonth();
+
+    of(this.eventService.getEvents()).subscribe((events: Event[]) => {
+      this.events = events;
+      this.generateDaysOfMonth();
+    });
   }
 
-  openModal() {
-    const dialogRef = this.dialog.open(CreateEventComponent, {
-      width: '600px',
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog was closed');
-    });
+  newEvent() {
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   trackByIndex(item: any): number {
     return item.index;
   }
 
-  eventsdateSelected() {
+  eventsDateSelected() {
     return this.events
       .filter(
         (event) =>
@@ -58,8 +58,6 @@ export class CalendarComponent {
       )
       .map((event, index) => ({ index, event }));
   }
-
-  //sometimes to update the table, it is necessary to refresh the page
 
   removeEvent(event: any) {
     this.eventService.removeEvent(event);

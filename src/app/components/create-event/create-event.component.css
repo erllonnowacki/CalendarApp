@@ -1,13 +1,25 @@
-.form {
+.container {
   display: flex;
   flex-direction: column;
-  max-width: 300px;
   justify-content: center;
   align-items: center;
+}
+.form {
+  max-width: 300px;
   min-width: -webkit-fill-available;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 mat-form-field {
   width: 70%;
+  margin: 10px;
+}
+
+.description {
+  min-height: 50px;
+  max-height: 150px;
 }

@@ -62,3 +62,18 @@
   margin-bottom: 5px;
   padding: 3px;
 }
+
+.month-table {
+  max-width: 800px;
+}
+
+.allEvents {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  max-width: 400px;
+  min-width: 200px;
+  word-break: break-word;
+  border: 1px solid #ccc;
+}

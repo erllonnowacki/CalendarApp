@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Event } from '../models/event';
-import { EventEmitter } from '@angular/core';
-
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
   private eventosKey = 'eventos';
-  eventosChanged = new EventEmitter<Event[]>();
-  eventosExcluido = new EventEmitter<number>();
+  private eventosSubject = new Subject<Event[]>();
+  eventosChanged = this.eventosSubject.asObservable();
+  eventosExcluido = new Subject<number>();
 
   constructor() {}
 
-  getEventsFromStorage(): Event[] {
+  private getEventsFromStorage(): Event[] {
     const eventosString = localStorage.getItem(this.eventosKey);
 
     return eventosString
@@ -25,6 +25,7 @@ export class EventService {
         })
       : [];
   }
+
   getEvents(): Event[] {
     return this.getEventsFromStorage();
   }
@@ -39,16 +40,16 @@ export class EventService {
 
   refreshEvents() {
     const eventos = this.getEventsFromStorage();
-    this.eventosChanged.next(eventos.slice());
+    this.eventosSubject.next(eventos.slice());
   }
 
-  adicionarEvento(evento: Event) {
+  addEvent(evento: Event) {
     const eventos = this.getEventsFromStorage();
     const newId = eventos.length > 0 ? eventos[eventos.length - 1].id + 1 : 1;
     const novoEvento = { ...evento, id: newId };
     eventos.push(novoEvento);
     localStorage.setItem(this.eventosKey, JSON.stringify(eventos));
-    this.eventosChanged.next(eventos.slice());
+    this.eventosSubject.next(eventos.slice());
   }
 
   removeEvent(event: Event) {
@@ -57,8 +58,9 @@ export class EventService {
     if (index === -1) return;
     eventos.splice(index, 1);
     localStorage.setItem(this.eventosKey, JSON.stringify(eventos));
-    this.eventosExcluido.emit(event.id);
+    this.eventosExcluido.next(event.id);
     this.refreshEvents();
+    window.location.reload();
   }
 
   moveEvent(event: Event, previousDate: string, newDate: string) {
@@ -76,6 +78,6 @@ export class EventService {
     );
 
     localStorage.setItem(this.eventosKey, JSON.stringify(eventos));
-    this.eventosChanged.next(eventos.slice());
+    this.eventosSubject.next(eventos.slice());
   }
 }

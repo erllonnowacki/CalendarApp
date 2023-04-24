@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { EventService } from 'src/app/services/event.service';
 
 @Component({
@@ -10,11 +10,12 @@ import { EventService } from 'src/app/services/event.service';
 })
 export class CreateEventComponent implements OnInit {
   eventForm: FormGroup = new FormGroup({});
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
     private eventService: EventService,
-    private dialogRef: MatDialogRef<CreateEventComponent>
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -27,14 +28,21 @@ export class CreateEventComponent implements OnInit {
   }
 
   onSubmit() {
-    const novoEvento = {
-      id: Date.now(),
-      title: this.eventForm.get('title')?.value,
-      description: this.eventForm.get('description')?.value,
-      date: this.eventForm.get('dateEvent')?.value,
-    };
-    this.eventService.adicionarEvento(novoEvento);
-    this.eventForm.reset();
-    this.dialogRef.close();
+    this.submitted = true;
+    if (this.eventForm.valid) {
+      const novoEvento = {
+        id: Date.now(),
+        title: this.eventForm.get('title')?.value,
+        description: this.eventForm.get('description')?.value,
+        date: this.eventForm.get('dateEvent')?.value,
+      };
+      this.eventService.addEvent(novoEvento);
+      this.eventForm.reset();
+      this.location.back();
+    }
+  }
+
+  onCancel() {
+    this.location.back();
   }
 }

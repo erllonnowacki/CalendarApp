@@ -4,7 +4,7 @@
       class="createEvent"
       mat-raised-button
       color="primary"
-      (click)="openModal()"
+      (click)="newEvent()"
     >
       Create Event
     </button>
@@ -33,9 +33,12 @@
         >
           <span *ngIf="day" class="day-number">
             {{ day }}
-            <mat-chip *ngIf="eventsForDay(day).length > 0" color="primary">
+            <span
+              *ngIf="eventsForDay(day).length > 0"
+              style="font-size: xx-small; color: green"
+            >
               {{ eventsForDay(day).length }}
-            </mat-chip>
+            </span>
           </span>
           <div class="events">
             <div
@@ -60,16 +63,20 @@
   </table>
 
   <h2>Events in {{ dateSelected | date }}</h2>
-  <div *ngIf="eventsdateSelected().length === 0">
+  <div *ngIf="eventsDateSelected().length === 0">
     <h3>No events</h3>
   </div>
   <div
-    *ngFor="let item of eventsdateSelected(); trackBy: trackByIndex"
+    *ngFor="let item of eventsDateSelected(); trackBy: trackByIndex"
     class="listEvent"
   >
-    <span>
-      {{ item.event.title }}
-    </span>
+    <div class="allEvents">
+      <span>
+        {{ item.event.title }}
+        <p style="font-size: 14px; color: #ccc">{{ item.event.description }}</p>
+      </span>
+    </div>
+
     <button (click)="removeEvent(item.event)" mat-icon-button color="accent">
       <mat-icon>delete</mat-icon>
     </button>
